@@ -4,9 +4,7 @@
 #include "Character/PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Controller/CharacterController.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -24,7 +22,7 @@ APlayerCharacter::APlayerCharacter()
 
     CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
     CameraBoom->SetupAttachment(GetRootComponent());
-    CameraBoom->TargetArmLength = 400.f;
+    CameraBoom->TargetArmLength = 350.f;
     CameraBoom->bUsePawnControlRotation = false;
 
     // This is the important part: socket offset for side + height
@@ -40,45 +38,7 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-    // Movement defaults
-    GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
-
-void APlayerCharacter::Move(const FInputActionValue& Value)
-{
-    const FVector2D MovementVector = Value.Get<FVector2D>();
-    if (Controller)
-    {
-        const FRotator Rotation = Controller->GetControlRotation();
-        const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
-
-        const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-        AddMovementInput(ForwardDirection, MovementVector.Y);
-        const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-        AddMovementInput(RightDirection, MovementVector.X);
-    }
-}
-
-void APlayerCharacter::Look(const FInputActionValue& Value)
-{
-    FVector2D LookAxisVector = Value.Get<FVector2D>();
-    AddControllerYawInput(LookAxisVector.X);
-    AddControllerPitchInput(LookAxisVector.Y);
-}
-
-void APlayerCharacter::StartSprint()
-{
-    bIsWalking = true;
-    GetCharacterMovement()->MaxWalkSpeed = JogSpeed; // Use WalkSpeed here
-}
-
-void APlayerCharacter::StopSprint()
-{
-    bIsWalking = false;
-    GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
-}
-
 // Called every frame
 void APlayerCharacter::Tick(float DeltaTime)
 {

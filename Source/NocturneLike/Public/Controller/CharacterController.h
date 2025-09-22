@@ -15,6 +15,9 @@ class NOCTURNELIKE_API ACharacterController : public APlayerController
 {
 	GENERATED_BODY()
 	
+public:
+	ACharacterController();
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -32,8 +35,26 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	class UInputAction* SprintAction;
 
-	void HandleMove(const FInputActionValue& Value);
-	void HandleLook(const FInputActionValue& Value);
-	void HandleStartSprint();
-	void HandleStopSprint();
+	// Walk Setting
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	float WalkSpeed = 300.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	float JogSpeed = 600.f;
+
+	// Walking
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	bool bIsSprint = false;
+
+	// === Camera Pitch Limit ===
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
+	float MinPitch = -70.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
+	float MaxPitch = 70.f;
+
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
+	void StartSprint();
+	void StopSprint();
 };

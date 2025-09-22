@@ -33,22 +33,10 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class UCameraComponent* FollowCamera;
 
-	// Walk Setting
-	UPROPERTY(EditDefaultsOnly, Category = "Movement")
-	float WalkSpeed = 300.f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Movement")
-	float JogSpeed = 600.f;
-
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	// Walking
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	bool bIsWalking = false;
-
 };
